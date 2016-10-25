@@ -19,10 +19,8 @@ def print_header
   puts "------------"
 end
 def print(students)
-  puts "Insert your first letter"
-  first_letter = gets.chomp.upcase
-  students.each.with_index do |student,index|
-    puts "#{index+1}. #{student[:name]} (#{student[:cohort]} cohort)" if student[:name][0] == first_letter
+  students.each.with_index do |student|
+    puts "#{student[:name]} (#{student[:cohort]} cohort)" if student[:name].length < 12
   end
 end
 
