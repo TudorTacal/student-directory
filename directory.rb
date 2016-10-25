@@ -4,12 +4,17 @@ def input_students
   #create an empty array
   students=[]
   name = gets.chomp
+  cohort = gets.chomp.to_sym
+  cohort = :november if cohort ==""
   #while the name is not empty, repeat this code
   while !name.empty? do
     #add the student hash to the array
-    students << {name: name,  cohort: :november}
+    students << {name: name,  cohort: cohort}
     puts "Now we have #{students.count} students"
     name = gets.chomp
+    break if name ==""
+    cohort = gets.chomp
+    cohort = :november if cohort ==""
   end
   #return the array of students
   students
