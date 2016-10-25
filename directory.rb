@@ -13,7 +13,7 @@ def input_students
     puts "Now we have #{students.count} students"
     name = gets.chomp
     break if name ==""
-    cohort = gets.chomp
+    cohort = gets.chomp.to_sym
     cohort = :november if cohort ==""
   end
   #return the array of students
@@ -24,10 +24,10 @@ def print_header
   puts "------------"
 end
 def print(students)
-  count = 0
-  until count == students.size
-    puts "#{students[count][:name]}".ljust(30) + "(#{students[count][:cohort]} cohort)"
-    count +=1
+  ary = students.map{|x| x[:cohort]}.uniq.each do |y|
+    students.each do |x|
+      puts "#{x[:name]}".ljust(30) + "(#{x[:cohort]} cohort)" if x[:cohort]==y
+    end
   end
 end
 
