@@ -5,7 +5,7 @@ def input_students
   students=[]
   name = gets.chomp
   cohort = gets.chomp.to_sym
-  cohort = :november if cohort ==""
+  cohort =:november if cohort.empty?
   #while the name is not empty, repeat this code
   while !name.empty? do
     #add the student hash to the array
@@ -14,7 +14,7 @@ def input_students
     name = gets.chomp
     break if name ==""
     cohort = gets.chomp.to_sym
-    cohort = :november if cohort ==""
+    cohort =:november if cohort.empty?
   end
   #return the array of students
   students
@@ -24,11 +24,11 @@ def print_header
   puts "------------"
 end
 def print(students)
-  ary = students.map{|x| x[:cohort]}.uniq.each do |y|
-    students.each do |x|
-      puts "#{x[:name]}".ljust(30) + "(#{x[:cohort]} cohort)" if x[:cohort]==y
-    end
-  end
+  puts "Type the name of the cohort to see the list of students"
+  month = gets.chomp.to_sym.downcase
+  month = :november if  month.empty?
+  students.each{|student| puts "#{student[:name]}".ljust(30) + "(#{student[:cohort]} cohort)" if student[:cohort]==month}
+  return puts "No students were found in this cohort"  
 end
 
 def print_footer(names)
