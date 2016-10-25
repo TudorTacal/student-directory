@@ -3,17 +3,17 @@ def input_students
   puts "To finish, just hit return twice"
   #create an empty array
   students=[]
-  name = gets.chomp
-  cohort = gets.chomp.to_sym
+  name = gets.delete("\n")
+  cohort = gets.delete("\n").to_sym
   cohort =:november if cohort.empty?
   #while the name is not empty, repeat this code
   while !name.empty? do
     #add the student hash to the array
     students << {name: name,  cohort: cohort}
     puts students.count <2 ? "Now we have #{students.count} student" : "Now we have #{students.count} students"
-    name = gets.chomp
+    name = gets.delete("\n")
     break if name ==""
-    cohort = gets.chomp.to_sym
+    cohort = gets.delete("\n").to_sym
     cohort =:november if cohort.empty?
   end
   #return the array of students
@@ -27,12 +27,11 @@ def print(students)
   puts "Type the name of the cohort to see the list of students"
   month = gets.chomp.to_sym.downcase
   month = :november if  month.empty?
-  students.each do |student| 
-    if month==student[:cohort]
-      puts "#{student[:name]}".ljust(30) + "(#{student[:cohort]} cohort)" 
+  ary = students.map{|x| x[:cohort]}
+  if ary.include?(month)
+    students.each{|student| puts "#{student[:name]}".ljust(30) + "(#{student[:cohort]} cohort)"  if month==student[:cohort]}  
   else
-      puts "No students were found in this cohort" 
-    end
+    puts "No students were found in this cohort" 
   end
 end
 
