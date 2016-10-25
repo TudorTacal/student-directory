@@ -29,7 +29,7 @@ def print(students)
   month = :november if  month.empty?
   ary = students.map{|x| x[:cohort]}
   if ary.include?(month)
-    students.each{|student| puts "#{student[:name]}".ljust(30) + "(#{student[:cohort]} cohort)"  if month==student[:cohort]}  
+    students.each{|student| puts "#{student[:name]}".ljust(30) + "(#{student[:cohort]} cohort)"  if month==student[:cohort]} if students.count > 0  
   else
     puts "No students were found in this cohort" 
   end
