@@ -10,7 +10,7 @@ def input_students
   while !name.empty? do
     #add the student hash to the array
     students << {name: name,  cohort: cohort}
-    puts "Now we have #{students.count} students"
+    puts students.count <2 ? "Now we have #{students.count} student" : "Now we have #{students.count} students"
     name = gets.chomp
     break if name ==""
     cohort = gets.chomp.to_sym
@@ -27,12 +27,17 @@ def print(students)
   puts "Type the name of the cohort to see the list of students"
   month = gets.chomp.to_sym.downcase
   month = :november if  month.empty?
-  students.each{|student| puts "#{student[:name]}".ljust(30) + "(#{student[:cohort]} cohort)" if student[:cohort]==month}
-  return puts "No students were found in this cohort"  
+  students.each do |student| 
+    if month==student[:cohort]
+      puts "#{student[:name]}".ljust(30) + "(#{student[:cohort]} cohort)" 
+  else
+      puts "No students were found in this cohort" 
+    end
+  end
 end
 
 def print_footer(names)
-  puts "Overall, we have #{names.count} great students"  
+  puts names.count<2 ? "Overall, we have #{names.count} great student" : "Overall, we have #{names.count} great students"
 end
 #nothing happens until we call this methods
 students = input_students
