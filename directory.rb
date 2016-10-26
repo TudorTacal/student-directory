@@ -39,18 +39,19 @@ def load_students(filename = 'students.csv')
     get_students(name,cohort)
   end
   file.close
+  puts "You loaded #{@students.count} students"
 end
 
 def save_students
   file = File.open("students.csv","w")
   @students.each{|student| file.puts [student[:name], student[:cohort]].join(",")}
   file.close
+  puts "Your student list was succesfully saved"
 end
 
 def process(selection)
     case selection
       when "1"
-        #input the students
         input_students
       when "2"
         show_students
@@ -59,6 +60,7 @@ def process(selection)
       when "4"
         load_students
       when "9"
+        puts "You were awesome"
         exit
       else
         puts "I don't know what you meant, try again"
@@ -82,9 +84,11 @@ def input_students
   puts "Please enter the names of the students"
   puts "To finish, just hit return twice"
   input_names
+  puts "Please enter the cohort name"
   input_cohort
   while !@name.empty? do
     get_students(@name,@cohort)
+    puts "You successfully added a student"
     puts @students.count==1 ? "Now we have #{@students.count} student" : "Now we have #{@students.count} students"
     input_names
     break if @name ==""
