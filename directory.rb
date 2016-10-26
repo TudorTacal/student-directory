@@ -2,7 +2,7 @@
 def interactive_menu
   loop do
     print_menu
-    process(gets.chomp)
+    process(STDIN.gets.chomp)
   end
 end
 
@@ -20,8 +20,20 @@ def show_students
   print_footer
 end
 
-def load_students
-  file = File.open('students.csv', 'r')
+def try_load_students
+  filename = ARGV.first
+  return if filename.nil?
+  if File.exists?(filename)
+    load_students(filename)
+      puts "Loaded #{@students.count} students from #{filename}"
+  else
+    puts "Sorry, #{filename} doesn't exist."
+    exit
+  end
+end
+
+def load_students(filename = 'students.csv')
+  file = File.open(filename, 'r')
   file.readlines.each do |line|
     name, cohort = line.chomp.split(',')
     @students << {name: name , cohort: cohort.to_sym}
@@ -63,17 +75,17 @@ end
 def input_students
   puts "Please enter the names of the students"
   puts "To finish, just hit return twice"
-  name = gets.delete("\n")
-  cohort = gets.delete("\n").to_sym
+  name = STDIN.gets.chomp
+  cohort = STDIN.gets.chomp.to_sym
   cohort =:november if cohort.empty?
   #while the name is not empty, repeat this code
   while !name.empty? do
     #add the student hash to the array
     @students << {name: name,  cohort: cohort}
     puts @students.count==1 ? "Now we have #{@students.count} student" : "Now we have #{@students.count} students"
-    name = gets.delete("\n")
+    name = STDIN.gets.chomp
     break if name ==""
-    cohort = gets.delete("\n").to_sym
+    cohort = STDIN.gets.chomp.to_sym
     cohort =:november if cohort.empty?
   end
 end
@@ -85,7 +97,7 @@ end
 
 def print_students_list
   puts "Type the name of the cohort to see the list of students"
-  month = gets.chomp.to_sym.downcase
+  month = STDIN.gets.chomp.to_sym.downcase
   month = :november if  month.empty?
   ary = @students.map{|x| x[:cohort]}
   if ary.include?(month)
@@ -99,6 +111,7 @@ def print_footer
   puts @students.count==1 ? "Overall, we have #{@students.count} great student" : "Overall, we have #{@students.count} great students"
 end
 #nothing happens until we call this methods
+try_load_students
 interactive_menu
 
 
