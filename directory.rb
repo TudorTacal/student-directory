@@ -20,9 +20,9 @@ def show_students
   print_footer
 end
 
-def try_load_students
+def preload_students_file
   filename = ARGV.first
-  filename = 'students.csv' if filename.nil?
+  filename ='students.csv' if filename.nil?
   if File.exists?(filename)
     load_students(filename)
       puts "Loaded #{@students.count} students from #{filename}"
@@ -42,18 +42,12 @@ def load_students(filename = 'students.csv')
 end
 
 def save_students
-  #open the file for writing
   file = File.open("students.csv","w")
-  @students.each do |student|
-    student_data = [student[:name], student[:cohort]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
-  end
+  @students.each{|student| file.puts [student[:name], student[:cohort]].join(",")}
   file.close
 end
 
 def process(selection)
-    # 3. do what the user has asked
     case selection
       when "1"
         #input the students
@@ -75,21 +69,26 @@ def get_students(student_name,student_cohort)
   @students << {name: student_name,  cohort: student_cohort.to_sym}
 end
 
+def input_names
+  @name=STDIN.gets.chomp
+end
+
+def input_cohort
+  @cohort = STDIN.gets.chomp.to_sym
+  @cohort =:november if @cohort.empty?
+end
+
 def input_students
   puts "Please enter the names of the students"
   puts "To finish, just hit return twice"
-  name = STDIN.gets.chomp
-  cohort = STDIN.gets.chomp.to_sym
-  cohort =:november if cohort.empty?
-  #while the name is not empty, repeat this code
-  while !name.empty? do
-    #add the student hash to the array
-    get_students(name,cohort)
+  input_names
+  input_cohort
+  while !@name.empty? do
+    get_students(@name,@cohort)
     puts @students.count==1 ? "Now we have #{@students.count} student" : "Now we have #{@students.count} students"
-    name = STDIN.gets.chomp
-    break if name ==""
-    cohort = STDIN.gets.chomp.to_sym
-    cohort =:november if cohort.empty?
+    input_names
+    break if @name ==""
+    input_cohort
   end
 end
 
@@ -114,7 +113,7 @@ def print_footer
   puts @students.count==1 ? "Overall, we have #{@students.count} great student" : "Overall, we have #{@students.count} great students"
 end
 #nothing happens until we call this methods
-try_load_students
+preload_students_file
 interactive_menu
 
 
