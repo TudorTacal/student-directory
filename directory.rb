@@ -1,3 +1,9 @@
+def read_output_source_code
+  File.open($0,'r') do |x|
+    x.readlines.each { |y| puts y}
+  end
+end
+
 require 'csv'
 @students = []
 def interactive_menu
@@ -121,8 +127,8 @@ end
 def print_footer
   puts @students.count==1 ? "Overall, we have #{@students.count} great student" : "Overall, we have #{@students.count} great students"
 end
-#nothing happens until we call this methods
-preload_students_file
-interactive_menu
+#preload_students_file
+#interactive_menu
+read_output_source_code
 
 
