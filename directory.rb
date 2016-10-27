@@ -9,8 +9,8 @@ end
 def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
-  puts "3. Save the list to students.csv"
-  puts "4. Load the list from students.csv"
+  puts "3. Save the list to custom file"
+  puts "4. Load the list from custom file"
   puts "9. Exit"
 end
 
@@ -22,7 +22,7 @@ end
 
 def preload_students_file
   filename = ARGV.first
-  filename ='students.csv' if filename.nil?
+  filename = 'students.csv' if filename.nil?
   if File.exists?(filename)
     load_students(filename)
       puts "Loaded #{@students.count} students from #{filename}"
@@ -32,20 +32,22 @@ def preload_students_file
   end
 end
 
-def load_students(filename = 'students.csv')
-  file = File.open(filename, 'r')
-  file.readlines.each do |line|
-    name, cohort = line.chomp.split(',')
-    get_students(name,cohort)
+def load_students(filename='students.csv')
+  File.open(filename, 'r') do |x|
+    x.readlines.each do |line|
+      name, cohort = line.chomp.split(',')
+      get_students(name,cohort)
+    end
   end
-  file.close
   puts "You loaded #{@students.count} students"
 end
 
 def save_students
-  file = File.open("students.csv","w")
-  @students.each{|student| file.puts [student[:name], student[:cohort]].join(",")}
-  file.close
+  print "Select the name of the file where you want to save the students: "
+  filename = STDIN.gets.chomp
+  File.open(filename,"w") do |x|
+    @students.each{|student| x.puts [student[:name], student[:cohort]].join(",")}
+  end
   puts "Your student list was succesfully saved"
 end
 
@@ -58,7 +60,9 @@ def process(selection)
       when "3"
         save_students
       when "4"
-        load_students
+        print "Select the file from where to load the students: "
+        filename = STDIN.gets.chomp
+        File.exists?(filename) ? load_students(filename) : load_students 
       when "9"
         puts "You were awesome"
         exit
