@@ -1,3 +1,4 @@
+require 'csv'
 @students = []
 def interactive_menu
   loop do
@@ -33,9 +34,9 @@ def preload_students_file
 end
 
 def load_students(filename='students.csv')
-  File.open(filename, 'r') do |x|
-    x.readlines.each do |line|
-      name, cohort = line.chomp.split(',')
+  CSV.open(filename, 'r') do |csv|
+    csv.readlines.each do |line|
+      name, cohort = line
       get_students(name,cohort)
     end
   end
@@ -45,8 +46,8 @@ end
 def save_students
   print "Select the name of the file where you want to save the students: "
   filename = STDIN.gets.chomp
-  File.open(filename,"w") do |x|
-    @students.each{|student| x.puts [student[:name], student[:cohort]].join(",")}
+  CSV.open(filename,"w") do |x|
+    @students.each{|student| x << [student[:name], student[:cohort]]}
   end
   puts "Your student list was succesfully saved"
 end
